@@ -1,0 +1,6 @@
+node_modules
+dist
+.env
+*.log
+apps/api/data/cache
+apps/api/data/dataset.json

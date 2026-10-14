@@ -1,0 +1,79 @@
+@import '../../styles/abstracts';
+
+.neighborhoods-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 2rem;
+  margin-bottom: 1rem;
+  @include er-surface(1rem 1.25rem);
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+
+    strong {
+      font-size: $font-size-lg;
+    }
+  }
+
+  &__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-left: auto;
+    font-size: $font-size-sm;
+    color: $text-muted;
+
+    > span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+  }
+
+  &__swatch {
+    display: inline-block;
+    width: 0.9rem;
+    height: 0.5rem;
+    border-radius: $border-radius-pill;
+    background: $er-score-good;
+
+    &--above {
+      background: $warning;
+    }
+  }
+
+  &__marker {
+    display: inline-block;
+    width: 2px;
+    height: 0.9rem;
+    background: $dark;
+  }
+}
+
+.neighborhoods-table {
+  thead th {
+    background: $light;
+    font-size: $font-size-sm;
+    color: $gray-700;
+  }
+
+  &__link {
+    color: $headings-color;
+
+    .bi {
+      opacity: 0;
+      transition: opacity $er-transition;
+    }
+
+    &:hover .bi,
+    &:focus-visible .bi {
+      opacity: 1;
+    }
+  }
+
+  &__median {
+    min-width: 11rem;
+  }
+}

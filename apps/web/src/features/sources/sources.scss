@@ -1,0 +1,63 @@
+@import '../../styles/abstracts';
+
+.sources-principles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    display: flex;
+    gap: 0.85rem;
+    @include er-surface(1rem 1.1rem);
+
+    > .bi {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: $border-radius;
+      background: rgba($primary, 0.1);
+      color: $primary;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+.sources-page__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.sources-table {
+  thead th {
+    background: $light;
+    font-size: $font-size-sm;
+    color: $gray-700;
+  }
+
+  &__platform {
+    font-size: $font-size-sm * 0.9;
+    color: $gray-700;
+    background: $light;
+    padding: 0.1rem 0.4rem;
+    border-radius: $border-radius-sm;
+  }
+
+  &__error {
+    @include er-truncate(1);
+    max-width: 32ch;
+    margin-top: 0.2rem;
+    font-size: $font-size-sm * 0.9;
+    font-weight: $font-weight-normal;
+    color: $danger;
+  }
+}
