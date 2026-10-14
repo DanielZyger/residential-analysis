@@ -1,5 +1,6 @@
 import type { Property, Source, TransactionType } from '@er/shared';
 import { loadDataset, saveDataset } from '../repositories/datasetRepository';
+import { mergeProperties } from './core/mergeDataset';
 import { HttpClient } from './core/http';
 import { createLogger } from './core/logger';
 import { normalizePropertyType, toProperty } from './core/normalize';
@@ -71,9 +72,8 @@ async function main(): Promise<void> {
   log.info(`coletando ${selected.length} fonte(s)`);
   const results = await runPool(selected, concurrency, (s) => scrapeSource(s, collectedAt));
   const previous = await loadDataset();
-  const refreshed = new Set(results.filter((r) => !r.source.lastRunError || r.properties.length).map((r) => r.source.id));
-  const kept = previous.properties.filter((p) => !refreshed.has(p.sourceId));
-  const properties = [...results.flatMap((r) => r.properties), ...kept];
+  const activeIds = new Set(SOURCES.filter((s) => s.active).map((s) => s.id));
+  const properties = mergeProperties(previous.properties, results, activeIds, transactions);
   const sourcesById = new Map(previous.sources.map((s) => [s.id, s]));
   for (const { source } of results) sourcesById.set(source.id, source);
   const sources = SOURCES.map((s) => ({ ...describe(s), ...pickRunInfo(sourcesById.get(s.id)) }));

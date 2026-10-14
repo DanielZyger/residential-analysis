@@ -1,41 +1,31 @@
 import { slugify } from '../utils/text';
 
+// Prefeitura de Chapecó: Anexo XIII (2025) e mapa de bairros de maio/2026.
+// https://web.chapeco.sc.gov.br/documentos/Croquis/
 export const OFFICIAL_NEIGHBORHOODS = [
-  'Aeroporto', 'Agrícola', 'Aldo Arioli', 'Amizade', 'Atlântico', 'Bandeirante', 'Bela Vista', 'Boa Vista', 'Centro',
-  'Cerâmica', 'Consoladora', 'Copas Verdes', 'Cotrel', 'Cristal', 'Cristo Rei', 'Dal Molin', 'Demoliner', 'Esperança',
-  'Espírito Santo', 'Estevam Carraro', 'Fátima', 'Frinape', 'Industrial', 'Industrial Norte', 'Ipiranga', 'Jabuticabal',
-  'José Bonifácio', 'Koller', 'Liberdade', 'Linho', 'Maria Clara', 'Morada do Sol', 'Morro da Cegonha', 'Novo Atlântico',
-  'Paiol Grande', 'Parque dos Imigrantes', 'Parque Lívia', 'Parque Redenção', 'Petit Vilage', 'Presidente Castelo Branco',
-  'Presidente Vargas', 'Progresso', 'Rio Tigre', 'Santa Catarina', 'Santo Antônio', 'São Caetano', 'São Cristóvão',
-  'São José', 'São Vicente de Paulo', 'Três Vendas', 'Triângulo', 'União', 'Vale dos Parreirais', 'Vale Dourado',
-  'Verdureiros', 'Victoria I', 'Victoria II', 'Zimmer',
+  'Água Santa', 'Alvorada', 'Araras', 'Bela Vista', 'Belvedere', 'Boa Vista', 'Bom Pastor', 'Bom Retiro',
+  'Campestre', 'Castanheira', 'Centro', 'Cristo Rei', 'Desbravador', 'Dom Gerônimo', 'Dom Pascoal', 'Efapi',
+  'Eldorado', 'Engenho Braun', 'Esplanada', 'Florência', 'Fronteira Sul', 'Industrial', 'Jardim América',
+  'Jardim Europa', 'Jardim Itália', 'Jardins', 'Jardins do Vale', 'Lajeado', 'Líder', 'Maria Goretti',
+  'Monte Belo', 'Palmital', 'Paraíso', 'Parque das Palmeiras', 'Passo dos Fortes', 'Perimetral', 'Pinheirinho',
+  'Presidente Médici', 'Progresso', 'Quedas do Palmital', 'Saic', 'Santa Maria', 'Santa Paulina', 'Santo Antônio',
+  'Santos Dumont', 'São Cristóvão', 'São Lucas', 'São Pedro', 'Seminário', 'Trevo', 'Universitário',
+  'Vederti', 'Vila Real', 'Vila Rica',
 ];
 
 const ALIASES: Record<string, string> = {
-  'jaboticabal': 'Jabuticabal',
-  'redencao': 'Parque Redenção',
-  'petit-village': 'Petit Vilage',
-  'vila-santa-catarina': 'Santa Catarina',
-  'v-santa-catarina': 'Santa Catarina',
-  'castelo-branco': 'Presidente Castelo Branco',
-  'pres-vargas': 'Presidente Vargas',
-  'vitoria-i': 'Victoria I',
-  'vitoria-ii': 'Victoria II',
-  'victoria-1': 'Victoria I',
-  'victoria-2': 'Victoria II',
-  'parque-livia': 'Parque Lívia',
-  'imigrantes': 'Parque dos Imigrantes',
-  'centro-erechim': 'Centro',
-  'victoria': 'Victoria I',
-  'vitoria-2': 'Victoria II',
-  'vitoria-1': 'Victoria I',
-  'bandeirantes': 'Bandeirante',
-  'sao-vicente-de-paula': 'São Vicente de Paulo',
-  'dalmolin': 'Dal Molin',
-  'colegio-agricola': 'Agrícola',
+  'centro-chapeco': 'Centro',
+  'efapi-chapeco': 'Efapi',
+  'pres-medici': 'Presidente Médici',
+  'presidente-emilio-garrastazu-medici': 'Presidente Médici',
+  'medici': 'Presidente Médici',
+  'maria-goreti': 'Maria Goretti',
+  'dom-geronimo': 'Dom Gerônimo',
+  'santo-dumont': 'Santos Dumont',
+  'sao-antonio': 'Santo Antônio',
 };
 
-export const NOT_A_NEIGHBORHOOD = new Set(['zona-urbana', 'interior', 'ers-135', 'rs-135', 'zona-rural', 'nao-informado', 'outros']);
+export const NOT_A_NEIGHBORHOOD = new Set(['zona-urbana', 'interior', 'sc-283', 'sc-480', 'br-282', 'zona-rural', 'area-rural-de-chapeco', 'nao-informado', 'outros']);
 
 export const NEIGHBORHOOD_ALIASES: Record<string, string> = {
   ...Object.fromEntries(OFFICIAL_NEIGHBORHOODS.map((name) => [slugify(name), name])),

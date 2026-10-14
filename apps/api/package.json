@@ -8,7 +8,8 @@
     "start": "tsx src/server.ts",
     "scrape": "tsx src/scrapers/run.ts",
     "geo": "tsx src/scripts/geo.ts",
-    "typecheck": "tsc --noEmit -p ."
+    "typecheck": "tsc --noEmit -p .",
+    "test": "node --import tsx --test src/scrapers/core/*.test.ts src/scrapers/platforms/*.test.ts"
   },
   "dependencies": {
     "@er/shared": "*",

@@ -49,7 +49,7 @@ export default function SourcesPage() {
       <PageHeader
         eyebrow="Transparência"
         title="De onde vêm os dados"
-        subtitle="Os imóveis exibidos são coletados automaticamente dos sites das imobiliárias de Erechim. Não há parceria com nenhuma delas neste momento."
+        subtitle="Os imóveis exibidos são coletados automaticamente dos sites das imobiliárias de Chapecó. Não há parceria com nenhuma delas neste momento."
       />
       <ul className="sources-principles">
         {PRINCIPLES.map((principle) => (

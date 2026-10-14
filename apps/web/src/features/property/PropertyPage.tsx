@@ -55,7 +55,7 @@ export default function PropertyPage() {
       <h1 className="property-page__title">{property.title}</h1>
       <p className="property-page__location">
         <i className="bi bi-geo-alt me-1" aria-hidden="true" />
-        {[property.address, property.neighborhood, 'Erechim-RS'].filter(Boolean).join(' · ')}
+        {[property.address, property.neighborhood, 'Chapecó-SC'].filter(Boolean).join(' · ')}
       </p>
 
       <div className="property-page__layout">

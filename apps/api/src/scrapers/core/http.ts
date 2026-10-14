@@ -1,7 +1,7 @@
 import { isAllowed, parseRobots, type RobotsRules } from './robots';
 import type { Logger } from './logger';
 
-export const USER_AGENT = 'ErechimResidencialBot/0.1 (+analise de mercado residencial; contato via site)';
+export const USER_AGENT = 'ChapecoResidencialBot/0.1 (+analise de mercado residencial; contato via site)';
 
 interface HttpOptions {
   minIntervalMs: number;

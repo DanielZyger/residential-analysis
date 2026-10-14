@@ -9,7 +9,7 @@ export function AppFooter() {
       <div className="container">
         <DataNotice variant="footer" collectedAt={data?.collectedAt ?? null} />
         <div className="app-footer__meta">
-          <span>Erechim Residencial · projeto independente, sem vínculo com as imobiliárias listadas.</span>
+          <span>Chapecó Residencial · projeto independente, sem vínculo com as imobiliárias listadas.</span>
           {data && <span className="er-tabular">{formatNumber(data.totalProperties)} imóveis indexados</span>}
         </div>
       </div>

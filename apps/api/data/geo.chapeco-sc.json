@@ -1,0 +1,265 @@
+{
+  "source": "OpenStreetMap / Nominatim (ODbL)",
+  "generatedAt": "2026-10-14T18:11:21.047Z",
+  "center": {
+    "lat": -27.1042919,
+    "lng": -52.6146067
+  },
+  "neighborhoods": {
+    "centro": {
+      "name": "Centro",
+      "lat": -27.1042919,
+      "lng": -52.6146067
+    },
+    "efapi": {
+      "name": "Efapi",
+      "lat": -27.0991035,
+      "lng": -52.6756262
+    },
+    "passo-dos-fortes": {
+      "name": "Passo dos Fortes",
+      "lat": -27.0825568,
+      "lng": -52.611753
+    },
+    "presidente-medici": {
+      "name": "Presidente Médici",
+      "lat": -27.0927659,
+      "lng": -52.6032064
+    },
+    "universitario": {
+      "name": "Universitário",
+      "lat": -27.1226393,
+      "lng": -52.608073
+    },
+    "agua-santa": {
+      "name": "Água Santa",
+      "lat": -27.0561988,
+      "lng": -52.6505877
+    },
+    "alvorada": {
+      "name": "Alvorada",
+      "lat": -27.080359,
+      "lng": -52.6428426
+    },
+    "araras": {
+      "name": "Araras",
+      "lat": -27.0891876,
+      "lng": -52.6940037
+    },
+    "bela-vista": {
+      "name": "Bela Vista",
+      "lat": -27.0791246,
+      "lng": -52.629831
+    },
+    "belvedere": {
+      "name": "Belvedere",
+      "lat": -27.039665,
+      "lng": -52.6339794
+    },
+    "boa-vista": {
+      "name": "Boa Vista",
+      "lat": -27.0976001,
+      "lng": -52.581309
+    },
+    "bom-pastor": {
+      "name": "Bom Pastor",
+      "lat": -27.101573,
+      "lng": -52.5932561
+    },
+    "bom-retiro": {
+      "name": "Bom Retiro",
+      "lat": -27.0643772,
+      "lng": -52.6218461
+    },
+    "campestre": {
+      "name": "Campestre",
+      "lat": -27.1452342,
+      "lng": -52.6153666
+    },
+    "cristo-rei": {
+      "name": "Cristo Rei",
+      "lat": -27.0701048,
+      "lng": -52.6348945
+    },
+    "desbravador": {
+      "name": "Desbravador",
+      "lat": -27.053738,
+      "lng": -52.6040376
+    },
+    "dom-geronimo": {
+      "name": "Dom Gerônimo",
+      "lat": -27.0593327,
+      "lng": -52.629809
+    },
+    "dom-pascoal": {
+      "name": "Dom Pascoal",
+      "lat": -27.1332063,
+      "lng": -52.6105893
+    },
+    "eldorado": {
+      "name": "Eldorado",
+      "lat": -27.0656949,
+      "lng": -52.6367098
+    },
+    "engenho-braun": {
+      "name": "Engenho Braun",
+      "lat": -27.092236,
+      "lng": -52.6551207
+    },
+    "esplanada": {
+      "name": "Esplanada",
+      "lat": -27.1192996,
+      "lng": -52.5967941
+    },
+    "fronteira-sul": {
+      "name": "Fronteira Sul",
+      "lat": -27.1092366,
+      "lng": -52.7023746
+    },
+    "industrial": {
+      "name": "Industrial",
+      "lat": -27.159863,
+      "lng": -52.6052307
+    },
+    "jardim-america": {
+      "name": "Jardim América",
+      "lat": -27.0975601,
+      "lng": -52.63453
+    },
+    "jardim-europa": {
+      "name": "Jardim Europa",
+      "lat": -27.0802742,
+      "lng": -52.5955371
+    },
+    "jardim-italia": {
+      "name": "Jardim Itália",
+      "lat": -27.1058981,
+      "lng": -52.6223673
+    },
+    "jardins": {
+      "name": "Jardins",
+      "lat": -27.0949129,
+      "lng": -52.6410833
+    },
+    "jardins-do-vale": {
+      "name": "Jardins do Vale",
+      "lat": -27.1082821,
+      "lng": -52.5767899
+    },
+    "lajeado": {
+      "name": "Lajeado",
+      "lat": -27.0717536,
+      "lng": -52.6507866
+    },
+    "lider": {
+      "name": "Líder",
+      "lat": -27.0742556,
+      "lng": -52.6197316
+    },
+    "maria-goretti": {
+      "name": "Maria Goretti",
+      "lat": -27.1002925,
+      "lng": -52.6028026
+    },
+    "monte-belo": {
+      "name": "Monte Belo",
+      "lat": -27.1145803,
+      "lng": -52.589149
+    },
+    "palmital": {
+      "name": "Palmital",
+      "lat": -27.120111,
+      "lng": -52.6176833
+    },
+    "paraiso": {
+      "name": "Paraíso",
+      "lat": -27.0897791,
+      "lng": -52.5843672
+    },
+    "parque-das-palmeiras": {
+      "name": "Parque das Palmeiras",
+      "lat": -27.1029616,
+      "lng": -52.6432911
+    },
+    "pinheirinho": {
+      "name": "Pinheirinho",
+      "lat": -27.0865073,
+      "lng": -52.5948746
+    },
+    "progresso": {
+      "name": "Progresso",
+      "lat": -27.1414787,
+      "lng": -52.5892589
+    },
+    "quedas-do-palmital": {
+      "name": "Quedas do Palmital",
+      "lat": -27.1314065,
+      "lng": -52.6211971
+    },
+    "saic": {
+      "name": "Saic",
+      "lat": -27.1078722,
+      "lng": -52.6305005
+    },
+    "santa-maria": {
+      "name": "Santa Maria",
+      "lat": -27.1097601,
+      "lng": -52.6028508
+    },
+    "santa-paulina": {
+      "name": "Santa Paulina",
+      "lat": -27.0719201,
+      "lng": -52.5995618
+    },
+    "santo-antonio": {
+      "name": "Santo Antônio",
+      "lat": -27.1210819,
+      "lng": -52.6278913
+    },
+    "santos-dumont": {
+      "name": "Santos Dumont",
+      "lat": -27.1388108,
+      "lng": -52.629086
+    },
+    "sao-cristovao": {
+      "name": "São Cristóvão",
+      "lat": -27.0895155,
+      "lng": -52.6276625
+    },
+    "sao-lucas": {
+      "name": "São Lucas",
+      "lat": -27.1057118,
+      "lng": -52.5869934
+    },
+    "sao-pedro": {
+      "name": "São Pedro",
+      "lat": -27.097231,
+      "lng": -52.5898263
+    },
+    "seminario": {
+      "name": "Seminário",
+      "lat": -27.1332181,
+      "lng": -52.6011608
+    },
+    "trevo": {
+      "name": "Trevo",
+      "lat": -27.003359,
+      "lng": -52.6433295
+    },
+    "vederti": {
+      "name": "Vederti",
+      "lat": -27.0892834,
+      "lng": -52.7111715
+    },
+    "vila-real": {
+      "name": "Vila Real",
+      "lat": -27.0648697,
+      "lng": -52.6080172
+    },
+    "vila-rica": {
+      "name": "Vila Rica",
+      "lat": -27.0380661,
+      "lng": -52.6158058
+    }
+  }
+}

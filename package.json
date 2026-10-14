@@ -1,13 +1,17 @@
 {
-  "name": "erechim-residencial",
+  "name": "chapeco-residencial",
   "private": true,
-  "workspaces": ["packages/*", "apps/*"],
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
     "dev": "npm run dev -w @er/api & npm run dev -w @er/web",
     "dev:api": "npm run dev -w @er/api",
-    "dev:web": "npm run dev -w @er/web",
-    "scrape": "npm run scrape -w @er/api",
+    "dev:web": "npm run dev -w @er/web --",
+    "scrape": "npm run scrape -w @er/api --",
     "build": "npm run build -w @er/web",
-    "typecheck": "npm run typecheck --workspaces --if-present"
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test -w @er/api"
   }
 }

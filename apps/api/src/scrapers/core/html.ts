@@ -1,3 +1,4 @@
+import { CITY_SLUG } from '@er/shared';
 import * as cheerio from 'cheerio';
 import type { PropertyType } from '@er/shared';
 import { cleanText, normalizeText, parseBrNumber, parseInteger } from '../../utils/text';
@@ -84,8 +85,8 @@ export function residentialType(...hints: (string | null | undefined)[]): Proper
   return normalizePropertyType(...hints.map((hint) => hint?.replace(/-/g, ' '))) ?? null;
 }
 
-export function isErechim(value: string | null | undefined): boolean {
-  return normalizeText(value).includes('erechim');
+export function isTargetCity(value: string | null | undefined): boolean {
+  return new RegExp(`^${CITY_SLUG}(?:\\s*[-/]\\s*sc)?$`).test(normalizeText(value));
 }
 
 export function documentBase($: Html, url: string): string {

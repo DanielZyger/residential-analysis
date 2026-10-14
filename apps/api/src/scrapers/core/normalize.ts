@@ -39,7 +39,7 @@ export function normalizeTransaction(value: string | null | undefined): Transact
 }
 
 const RURAL_PATTERN = /(^|-)(interior|linha|povoado|distrito|area-rural)(-|$)/;
-const STREET_PATTERN = /^(rua|r|av|avenida|travessa|tv|rodovia|ers|rs|br|n)-/;
+const STREET_PATTERN = /^(rua|r|av|avenida|travessa|tv|rodovia|sc|br|n)-/;
 const PREFIX_PATTERN = /^(loteamento|lot\.?|residencial|condominio|bairro)\s+/i;
 const OFFICIAL_BY_LENGTH = Object.keys(NEIGHBORHOOD_ALIASES).sort((a, b) => b.length - a.length);
 
@@ -54,7 +54,8 @@ function canonicalName(slug: string): string | undefined {
 }
 
 export function normalizeNeighborhood(value: string | null | undefined): { name: string; slug: string } | null {
-  const cleaned = cleanText(firstSegment(value?.replace(/\b(bairro|erechim|rs)\b/gi, '') ?? '').replace(/[-/,.]+\s*$/, ''));
+  if (STREET_PATTERN.test(`${slugify(value ?? '')}-`)) return null;
+  const cleaned = cleanText(firstSegment(value?.replace(/\b(bairro|chapec[oó]|sc)\b/gi, '') ?? '').replace(/[-/,.]+\s*$/, ''));
   if (!cleaned) return null;
   const slug = slugify(cleaned);
   if (!slug || NOT_A_NEIGHBORHOOD.has(slug) || RURAL_PATTERN.test(slug) || STREET_PATTERN.test(`${slug}-`)) return null;

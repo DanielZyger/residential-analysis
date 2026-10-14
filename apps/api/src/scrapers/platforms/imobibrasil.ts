@@ -1,3 +1,4 @@
+import { CITY_SLUG } from '@er/shared';
 import * as cheerio from 'cheerio';
 import type { PropertyType, TransactionType } from '@er/shared';
 import { crawlListings, type ListingCrawlerSpec } from '../core/crawl';
@@ -6,7 +7,7 @@ import { normalizePropertyType } from '../core/normalize';
 import type { PlatformAdapter, ScrapeContext, ScrapedProperty } from '../core/types';
 import { cleanText, normalizeText, parseBrNumber, parseInteger } from '../../utils/text';
 
-const CITY = 'erechim';
+const CITY = CITY_SLUG;
 const TRANSACTION_PATH: Record<TransactionType, string> = { sale: 'venda', rent: 'locacao' };
 const FALLBACK_TYPES = ['apartamento', 'casa'];
 
@@ -49,7 +50,7 @@ function detailUrls($: Html, listUrl: string): string[] {
   const fromLinks = $('a[href]')
     .map((_, el) => absoluteUrl($(el).attr('href'), listUrl))
     .get()
-    .filter((u) => /\/imovel\/\d+\/[^/]*-erechim-rs-/.test(u));
+    .filter((u) => /\/imovel\/\d+\/[^/]*-chapeco-sc-/.test(u));
   const urls = fromLd.length ? fromLd : fromLinks;
   return [...new Set(urls.filter((u): u is string => !!u))];
 }
@@ -102,7 +103,7 @@ function photos($: Html, url: string, fallback: string | null): string[] {
 }
 
 function parseDetail($: Html, url: string, transaction: TransactionType, type: PropertyType): ScrapedProperty | null {
-  if (!/-erechim-rs-/.test(new URL(url).pathname)) return null;
+  if (!/-chapeco-sc-/.test(new URL(url).pathname)) return null;
   const blocks = jsonLd($);
   const product = obj(blocks.find((b) => b['@type'] === 'Product'));
   const action = obj(blocks.find(isAction));

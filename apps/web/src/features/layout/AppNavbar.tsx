@@ -24,7 +24,7 @@ export function AppNavbar() {
           <span className="app-navbar__logo" aria-hidden="true">
             <i className="bi bi-house-heart-fill" />
           </span>
-          Erechim Residencial
+          Chapecó Residencial
           <span className="app-navbar__state">{CITY_STATE}</span>
         </Link>
         <button

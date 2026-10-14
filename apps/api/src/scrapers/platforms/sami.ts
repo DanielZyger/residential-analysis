@@ -4,7 +4,7 @@ import {
   absoluteUrl,
   documentBase,
   factFields,
-  isErechim,
+  isTargetCity,
   metaContent,
   residentialType,
   setFact,
@@ -21,7 +21,7 @@ interface Card {
   type: PropertyType | null;
   title: string | null;
   neighborhood: string | null;
-  inErechim: boolean;
+  inTargetCity: boolean;
   facts: Facts;
 }
 
@@ -55,7 +55,7 @@ function parseCard($: Html, el: Element): Card {
     type: residentialType(typePart(title)),
     title,
     neighborhood: neighborhoodOf(location, card.find('.product-badge li').first().text()),
-    inErechim: isErechim(location),
+    inTargetCity: isTargetCity(location),
     facts: cardFacts($, card),
   };
 }
@@ -80,7 +80,7 @@ function photos($: Html, url: string): string[] {
 
 function parseDetail(card: Card | undefined, $: Html, url: string, transaction: TransactionType): ScrapedProperty | null {
   const type = card?.type ?? residentialType(typePart(textOf($, 'h1')));
-  if (!type || card?.inErechim === false) return null;
+  if (!type || card?.inTargetCity === false) return null;
   return {
     externalId: new URL(url).searchParams.get('id_imovel') ?? url,
     url,
@@ -113,7 +113,7 @@ function spec(website: string): ListingCrawlerSpec {
       });
       return all;
     },
-    accept: (url) => !!cards.get(url)?.type && !!cards.get(url)?.inErechim,
+    accept: (url) => !!cards.get(url)?.type && !!cards.get(url)?.inTargetCity,
     parseDetail: ($, url, transaction) => parseDetail(cards.get(url), $, url, transaction),
   };
 }

@@ -1,3 +1,4 @@
+import { CITY_SLUG } from '@er/shared';
 import type { PropertyType, TransactionType } from '@er/shared';
 import { crawlListings, type ListingCrawlerSpec } from '../core/crawl';
 import { metaContent, textOf, uniqueUrls, type Html } from '../core/html';
@@ -5,11 +6,11 @@ import { normalizePropertyType } from '../core/normalize';
 import type { PlatformAdapter, ScrapedProperty } from '../core/types';
 import { cleanText, normalizeText, parseBrNumber, parseInteger } from '../../utils/text';
 
-const CITY = 'erechim';
+const CITY = CITY_SLUG;
 const TRANSACTION_PATH: Record<TransactionType, string> = { sale: 'comprar-imoveis', rent: 'alugar-imoveis' };
 const CATEGORIES: [slug: string, fallback: PropertyType][] = [
-  ['apartamentos-erechim', 'apartment'],
-  ['casas-erechim', 'house'],
+  [ `apartamentos-${CITY}`, 'apartment'],
+  [ `casas-${CITY}`, 'house'],
 ];
 const RESIDENTIAL_WORD = /\b(casa|apartamento|apto|sobrado|cobertura|kitnet|kitinete|studio|loft)\b/;
 

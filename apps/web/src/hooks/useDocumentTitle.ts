@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const APP_NAME = 'Erechim Residencial';
+const APP_NAME = 'Chapecó Residencial';
 
 export function useDocumentTitle(title?: string | null) {
   useEffect(() => {

@@ -1,6 +1,6 @@
 import type { TransactionType } from '@er/shared';
 import { crawlListings, type ListingCrawlerSpec } from '../core/crawl';
-import { documentBase, factFields, isErechim, metaContent, residentialType, setFact, textOf, texts, uniqueUrls, type Facts, type Html } from '../core/html';
+import { documentBase, factFields, isTargetCity, metaContent, residentialType, setFact, textOf, texts, uniqueUrls, type Facts, type Html } from '../core/html';
 import type { PlatformAdapter, ScrapedProperty } from '../core/types';
 
 const PATH_SEGMENT = { type: 2, neighborhood: 3, city: 4, id: 6 } as const;
@@ -10,7 +10,7 @@ function segment(url: string, key: keyof typeof PATH_SEGMENT): string {
 }
 
 function isWanted(url: string): boolean {
-  return !!residentialType(segment(url, 'type')) && isErechim(segment(url, 'city'));
+  return !!residentialType(segment(url, 'type')) && isTargetCity(segment(url, 'city'));
 }
 
 function detailUrls($: Html, listUrl: string): string[] {
@@ -32,7 +32,7 @@ function detailFacts($: Html): Facts {
 function parseDetail($: Html, url: string, transaction: TransactionType): ScrapedProperty | null {
   const type = residentialType(segment(url, 'type'));
   const location = place($);
-  if (!type || !isErechim(location?.city ?? segment(url, 'city'))) return null;
+  if (!type || !isTargetCity(location?.city ?? segment(url, 'city'))) return null;
   return {
     externalId: segment(url, 'id'),
     url,

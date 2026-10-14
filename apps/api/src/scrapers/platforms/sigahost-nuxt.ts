@@ -1,3 +1,4 @@
+import { CITY_SLUG } from '@er/shared';
 import * as cheerio from 'cheerio';
 import type { PropertyType, TransactionType } from '@er/shared';
 import { cleanText, normalizeText, parseBrNumber, parseInteger } from '../../utils/text';
@@ -55,7 +56,7 @@ interface SigaPage<T> {
 
 const RESIDENTIAL_TYPE_IDS = '1,10,60';
 const OPERATIONS: Record<TransactionType, string> = { sale: 'vendas', rent: 'aluguel' };
-const CITY = 'erechim';
+const CITY = CITY_SLUG;
 
 function apiUrl(source: SourceConfig, path: string, params: Record<string, string | number>): string {
   const query = new URLSearchParams({ ...Object.fromEntries(Object.entries(params).map(([k, v]) => [k, String(v)])), idimob: '1', rede: '0' });

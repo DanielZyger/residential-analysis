@@ -1,6 +1,6 @@
-# Erechim Residencial — Planejamento
+# Chapecó Residencial — Planejamento
 
-Plataforma web que coleta anúncios residenciais (venda e aluguel) das imobiliárias de Erechim‑RS, calcula o valor do m² por bairro e ranqueia os imóveis por custo‑benefício, com filtros (dormitórios, garagem, preço, área, bairro, tipo).
+Plataforma web que coleta anúncios residenciais (venda e aluguel) das imobiliárias de Chapecó‑SC, calcula o valor do m² por bairro e ranqueia os imóveis por custo‑benefício, com filtros (dormitórios, garagem, preço, área, bairro, tipo).
 
 > **Origem dos dados:** não há parceria com imobiliárias neste momento. Os dados vêm de coleta automatizada (scraping) dos sites públicos das imobiliárias listadas em [IMOBILIARIAS.md](IMOBILIARIAS.md). A interface deixa isso explícito: cada imóvel exibe a fonte, link para o anúncio original e a data da coleta, e existe uma página "Fontes" com a cobertura atual.
 
@@ -16,7 +16,7 @@ Plataforma web que coleta anúncios residenciais (venda e aluguel) das imobiliá
 | Frontend | Vite + React + TypeScript | Componentização, build rápido |
 | UI | Bootstrap 5 (SCSS) | Estilos por feature (`*.scss` ao lado da feature) + `styles/` central para tokens, mixins e utilitários repetidos |
 
-Sem testes unitários (decisão do projeto). Sem comentários no código.
+Testes de regressão dos coletores usam fixtures de anúncios reais de Chapecó.
 
 ## Arquitetura
 
@@ -26,7 +26,7 @@ apps/api
   scrapers/core        http com rate limit + robots.txt, normalizadores (preço, área, bairro, tipo)
   scrapers/platforms   1 adapter por plataforma de site (cobre várias imobiliárias)
   scrapers/sources.ts  registro imobiliária → plataforma + config
-  scrapers/run.ts      CLI `npm run scrape` → grava data/properties.json
+  scrapers/run.ts      CLI `npm run scrape` → grava data/dataset.chapeco-sc.json
   services/market      estatísticas de m² por bairro/tipo/transação
   services/scoring     motor de pontuação e ranking
   repositories         acesso aos dados (JSON em memória; trocável por DB)
@@ -43,7 +43,7 @@ apps/web
 
 ### Fluxo de dados
 1. `npm run scrape` percorre as fontes ativas, respeita `robots.txt` e um intervalo entre requisições, normaliza e deduplica (mesmo endereço/área/preço entre imobiliárias).
-2. Resultado salvo em `data/properties.json` com `collectedAt`.
+2. Resultado salvo em `data/dataset.chapeco-sc.json` com `collectedAt`.
 3. A API carrega em memória na inicialização, pré‑calcula estatísticas de mercado e notas.
 4. O frontend consulta `/properties` com filtros + paginação; filtragem e ordenação ocorrem no servidor.
 
@@ -60,7 +60,7 @@ Calculado separadamente para **venda** e **aluguel**, comparando cada imóvel co
 | Garagem e suítes | 10% | Vagas e suítes em relação à faixa de preço |
 | Qualidade do anúncio | 10% | Área informada, fotos, bairro identificado, descrição — anúncios incompletos perdem confiança |
 
-Dados de localização: `npm run geo -w @er/api` baixa do OpenStreetMap (Overpass) o centro da cidade e a posição dos bairros para `apps/api/data/geo.json`. Os serviços (escolas, mercados, saúde) ainda estão pouco mapeados no OSM para Erechim, por isso não entram na nota por enquanto.
+Dados de localização: `npm run geo -w @er/api` baixa do OpenStreetMap (Overpass) o centro da cidade e a posição dos bairros para `apps/api/data/geo.chapeco-sc.json`. Os serviços (escolas, mercados, saúde) não entram na nota nesta versão.
 
 Deduplicação: feita ao carregar os dados na API. Anúncios de imobiliárias diferentes com o mesmo preço e mesma rua, ou com área até 3% diferente no mesmo bairro, viram um único imóvel; fica o anúncio mais completo e os demais aparecem em "Também anunciado em".
 
@@ -72,27 +72,25 @@ Transação (venda/aluguel), tipo, dormitórios mín., vagas mín., suítes mín
 
 ## Entregas
 
-### Entrega 1 — MVP
-- [x] Levantamento: 29 imobiliárias de Erechim e plataformas usadas (`docs/IMOBILIARIAS.md`)
-- [x] Monorepo + tipos compartilhados
-- [x] Coleta com adapters por plataforma, respeitando robots.txt, com normalização e deduplicação entre imobiliárias
-  - SigaHost Nuxt (7 imobiliárias), SigaHost clássico (6), ImobiBrasil (5), Erechim Imóveis, Simão
-  - Fora da coleta: Rigon, Santin, Piazza e LCD (robots.txt pede para não coletar)
-- [x] Estatísticas de m² por bairro (58 bairros oficiais do PL 045/2015 + mapa de grafias)
-- [x] Motor de pontuação e ranking explicável
-- [x] API: listagem filtrada/paginada, detalhe, bairros, fontes, meta
-- [x] Web: ranking com filtros, detalhe com breakdown da nota, m² por bairro, página de fontes
-- [x] Aviso de origem dos dados em todas as telas
+### Entrega 1 — MVP em Chapecó
+- [x] Registro de onze imobiliárias locais com status explícito (`docs/IMOBILIARIAS.md`)
+- [x] Coletores CCO, Conquista, Imobiliária Chapecó, Plaza, Pacheco, Foco, Exata e Casa Imóveis
+- [x] Filtros de cidade e de finalidade residencial
+- [x] Normalização dos bairros municipais de Chapecó e aliases
+- [x] Bases de imóveis e geografia separadas das antigas bases de Erechim
+- [x] Estatísticas de m² e ranking por transação/tipo
+- [x] Interface e identificação Chapecó–SC
+- [x] Testes de extração com páginas reais e rejeição de outras cidades
 
 ### Entrega 2 — Qualidade dos dados
-- Adapters pendentes: Demarco (Praedium, JSON-LD), AGE (Arbo, `__NEXT_DATA__`), Abenur, Silvana, Bonatto
-- Agendamento diário da coleta (cron)
-- Mapear loteamentos ("Florais Itália", "Estar do Chile"...) para o bairro oficial usando lat/long
-- Padronizar IPTU (anual vs. parcela) entre fontes
-- Área por planta em lançamentos com várias plantas
-- Banco SQLite/Postgres com histórico de preço (variação, tempo em anúncio)
-- Deduplicação por similaridade de fotos/descrição
-- Geocodificação dos imóveis
+- Validar acesso contínuo às fontes: HTTP 403 pode impedir a coleta
+- Implementar SM Santa Maria, Sim Imóveis e SM Corretores
+- Validar acesso à Casa Imóveis após respostas HTTP 403
+- Agendamento diário da coleta
+- Mapear loteamentos para bairros a partir de limites oficiais/coordenadas
+- Padronizar periodicidade de IPTU e área por planta
+- Banco SQLite/Postgres com histórico de preços
+- Geocodificação dos imóveis e cobertura dos bairros no OpenStreetMap
 
 ### Entrega 3 — Contexto do bairro
 - Índice de infraestrutura por bairro via OpenStreetMap (escolas, saúde, mercados, transporte)
