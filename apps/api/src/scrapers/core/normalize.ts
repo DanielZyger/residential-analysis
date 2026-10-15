@@ -3,6 +3,7 @@ import { NEIGHBORHOOD_ALIASES, NOT_A_NEIGHBORHOOD } from '../../data/neighborhoo
 import { cleanText, hash, normalizeText, slugify, titleCase } from '../../utils/text';
 import { round } from '../../utils/stats';
 import { typeGroup } from '../../services/market/typeGroup';
+import { annualIptu } from './iptu';
 
 const TYPE_PATTERNS: [RegExp, PropertyType | null][] = [
   [/\b(terrenos?|lotes?|salas? comercia(l|is)|salas?|lojas?|comercial|pavilh(ao|oes)|galp(ao|oes)|depositos?|predio comercial|chacaras?|sitios?|fazendas?|area rural|ponto comercial|box de garagem|vaga de garagem)\b/, null],
@@ -67,9 +68,19 @@ function readableTitle(value: string): string {
   return title === title.toUpperCase() ? titleCase(title) : title;
 }
 
-export function withNormalizedNeighborhood(property: Property): Property {
+function normalizedIptu(raw: Pick<RawPropertyInput, 'iptu' | 'iptuPeriod' | 'transaction' | 'price'>): Pick<Property, 'iptu' | 'iptuPeriod'> {
+  const annual = annualIptu(raw.iptu, raw.iptuPeriod, raw.transaction, raw.price);
+  return { iptu: annual === null ? null : inRange(round(annual, 2), ANNUAL_IPTU_LIMITS), iptuPeriod: 'annual' };
+}
+
+export function renormalize(property: Property): Property {
   const neighborhood = normalizeNeighborhood(property.neighborhood);
-  return { ...property, neighborhood: neighborhood?.name ?? null, neighborhoodSlug: neighborhood?.slug ?? null };
+  return {
+    ...property,
+    ...(property.iptuPeriod === 'annual' ? {} : normalizedIptu(property)),
+    neighborhood: neighborhood?.name ?? null,
+    neighborhoodSlug: neighborhood?.slug ?? null,
+  };
 }
 
 const LIMITS: Record<TransactionType, { price: [number, number]; pricePerM2: [number, number] }> = {
@@ -78,6 +89,7 @@ const LIMITS: Record<TransactionType, { price: [number, number]; pricePerM2: [nu
 };
 const AREA_LIMITS: [number, number] = [12, 3_000];
 const FEE_LIMITS: [number, number] = [20, 20_000];
+const ANNUAL_IPTU_LIMITS: [number, number] = [50, 100_000];
 
 function plausibleArea(transaction: TransactionType, price: number | null, area: number | null): number | null {
   if (!price || !area) return area;
@@ -103,7 +115,7 @@ export function toProperty(raw: RawPropertyInput, sourceName: string, collectedA
     neighborhoodSlug: neighborhood?.slug ?? null,
     price,
     condoFee: inRange(raw.condoFee, FEE_LIMITS),
-    iptu: inRange(raw.iptu, FEE_LIMITS),
+    ...normalizedIptu({ ...raw, price }),
     privateArea,
     totalArea,
     area,

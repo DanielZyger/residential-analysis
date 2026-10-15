@@ -19,6 +19,11 @@ export async function registerRoutes(app: FastifyInstance, getCatalog: () => Cat
     return detail;
   });
 
+  app.get<Query>('/api/map', async (req, reply) => {
+    reply.header('cache-control', cache(60));
+    return getCatalog().map(parseFilters(req.query));
+  });
+
   app.get<Query>('/api/neighborhoods', async (req, reply) => {
     reply.header('cache-control', cache(300));
     return getCatalog().neighborhoods(parseTransaction(req.query.transaction));

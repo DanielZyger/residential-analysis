@@ -1,4 +1,6 @@
 import type {
+  MapPoint,
+  MapResponse,
   MetaResponse,
   NeighborhoodListResponse,
   PropertyDetailResponse,
@@ -11,7 +13,7 @@ import type {
 import type { Dataset } from '../repositories/datasetRepository';
 import type { GeoData } from '../repositories/geoRepository';
 import { dedupe } from '../scrapers/core/dedupe';
-import { withNormalizedNeighborhood } from '../scrapers/core/normalize';
+import { renormalize } from '../scrapers/core/normalize';
 import { MarketIndex } from './market/marketIndex';
 import { typeGroup } from './market/typeGroup';
 import { rankProperties } from './scoring/scoringEngine';
@@ -26,8 +28,11 @@ export class Catalog {
   private readonly neighborhoodCache = new Map<TransactionType, NeighborhoodListResponse>();
   private metaCache: MetaResponse | null = null;
 
-  constructor(private readonly dataset: Dataset, geo: GeoData | null) {
-    const properties = dedupe(dataset.properties.map(withNormalizedNeighborhood));
+  constructor(
+    private readonly dataset: Dataset,
+    private readonly geo: GeoData | null,
+  ) {
+    const properties = dedupe(dataset.properties.map(renormalize));
     this.market = new MarketIndex(properties);
     this.ranked = rankProperties(properties, this.market, geo).sort((a, b) => b.score.total - a.score.total);
     this.byId = new Map(this.ranked.map((p) => [p.id, p]));
@@ -62,6 +67,30 @@ export class Catalog {
       this.neighborhoodCache.set(transaction, cached);
     }
     return cached;
+  }
+
+  map(filters: PropertyFilters): MapResponse {
+    const matching = filterProperties(this.ranked, filters);
+    const points: MapPoint[] = matching
+      .filter((p) => p.latitude !== null && p.longitude !== null)
+      .map((p) => ({
+        id: p.id,
+        lat: p.latitude as number,
+        lng: p.longitude as number,
+        title: p.title,
+        type: p.type,
+        neighborhood: p.neighborhood,
+        price: p.price,
+        pricePerM2: p.pricePerM2,
+        bedrooms: p.bedrooms,
+        score: p.score.total,
+        photo: p.photos[0] ?? null,
+      }));
+    const neighborhoods = this.neighborhoods(filters.transaction).items.flatMap((stats) => {
+      const position = this.geo?.neighborhoods[stats.slug];
+      return position ? [{ slug: stats.slug, name: stats.name, lat: position.lat, lng: position.lng, count: stats.count, medianPricePerM2: stats.medianPricePerM2 }] : [];
+    });
+    return { transaction: filters.transaction, center: this.geo?.center ?? null, totalMatching: matching.length, points, neighborhoods };
   }
 
   sources(): SourceListResponse {

@@ -1,4 +1,5 @@
 import type {
+  MapResponse,
   MetaResponse,
   NeighborhoodListResponse,
   PropertyDetailResponse,
@@ -77,6 +78,10 @@ export function listProperties(filters: PropertyFilters, signal?: AbortSignal) {
 
 export function getProperty(id: string, signal?: AbortSignal) {
   return request<PropertyDetailResponse>(`/properties/${encodeURIComponent(id)}`, { signal });
+}
+
+export function getMap(filters: PropertyFilters, signal?: AbortSignal) {
+  return request<MapResponse>('/map', { query: filtersToParams(filters), signal });
 }
 
 export function listNeighborhoods(transaction: TransactionType, signal?: AbortSignal) {

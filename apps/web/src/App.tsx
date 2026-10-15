@@ -5,6 +5,7 @@ import { AppLayout } from './features/layout/AppLayout';
 
 const RankingPage = lazy(() => import('./features/ranking/RankingPage'));
 const PropertyPage = lazy(() => import('./features/property/PropertyPage'));
+const MapPage = lazy(() => import('./features/map/MapPage'));
 const NeighborhoodsPage = lazy(() => import('./features/neighborhoods/NeighborhoodsPage'));
 const SourcesPage = lazy(() => import('./features/sources/SourcesPage'));
 const NotFoundPage = lazy(() => import('./features/layout/NotFoundPage'));
@@ -16,6 +17,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<RankingPage />} />
           <Route path="/imovel/:id" element={<PropertyPage />} />
+          <Route path="/mapa" element={<MapPage />} />
           <Route path="/bairros" element={<NeighborhoodsPage />} />
           <Route path="/fontes" element={<SourcesPage />} />
           <Route path="*" element={<NotFoundPage />} />

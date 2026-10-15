@@ -3,7 +3,7 @@ export function PropertyPageSkeleton() {
     <div className="row g-4 placeholder-glow" aria-busy="true" aria-label="Carregando imóvel">
       <div className="col-lg-7">
         <span className="placeholder placeholder-lg col-8 rounded mb-3" />
-        <div className="photo-gallery__frame">
+        <div className="photo-carousel photo-carousel--gallery">
           <span className="placeholder w-100 h-100 rounded" />
         </div>
       </div>

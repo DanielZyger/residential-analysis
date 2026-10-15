@@ -1,5 +1,7 @@
 export type TransactionType = 'sale' | 'rent';
 
+export type IptuPeriod = 'annual' | 'monthly';
+
 export type PropertyType = 'house' | 'apartment' | 'townhouse' | 'studio' | 'penthouse' | 'land_house' | 'other';
 
 export interface RawPropertyInput {
@@ -12,6 +14,7 @@ export interface RawPropertyInput {
   price: number | null;
   condoFee: number | null;
   iptu: number | null;
+  iptuPeriod?: IptuPeriod | null;
   privateArea: number | null;
   totalArea: number | null;
   bedrooms: number | null;

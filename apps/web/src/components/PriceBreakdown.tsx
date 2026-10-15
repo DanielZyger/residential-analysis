@@ -18,7 +18,7 @@ export function PriceBreakdown({ property, size = 'md', className }: PriceBreakd
   const costs = monthlyCosts(property);
   const parts = costs
     ? [`Aluguel ${formatCurrency(costs.rent)}`, costs.condo != null && `Condomínio ${formatCurrency(costs.condo)}`, iptuLabel(costs.iptu, costs.iptuAnnual)]
-    : [property.condoFee != null && `Condomínio ${formatCurrency(property.condoFee)}/mês`, property.iptu != null && `IPTU ${formatCurrency(property.iptu)}`];
+    : [property.condoFee != null && `Condomínio ${formatCurrency(property.condoFee)}/mês`, property.iptu != null && `IPTU ${formatCurrency(property.iptu)}/ano`];
   const visibleParts = parts.filter(Boolean);
   return (
     <div className={cx('price-breakdown', `price-breakdown--${size}`, className)}>

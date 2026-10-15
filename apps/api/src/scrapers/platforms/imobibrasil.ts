@@ -2,6 +2,7 @@ import * as cheerio from 'cheerio';
 import type { PropertyType, TransactionType } from '@er/shared';
 import { crawlListings, type ListingCrawlerSpec } from '../core/crawl';
 import { absoluteUrl, jsonLd, metaContent, type Html } from '../core/html';
+import { iptuSnippet, parseIptu } from '../core/iptu';
 import { normalizePropertyType } from '../core/normalize';
 import type { PlatformAdapter, ScrapeContext, ScrapedProperty } from '../core/types';
 import { cleanText, normalizeText, parseBrNumber, parseInteger } from '../../utils/text';
@@ -120,7 +121,7 @@ function parseDetail($: Html, url: string, transaction: TransactionType, type: P
     title: cleanText($('title').first().text().replace(/,\s*\d.*$/, '')) ?? cleanText(name) ?? 'Imóvel residencial',
     price: parseBrNumber(str(obj(product.offers).price) ?? str(action.price)),
     condoFee: parseBrNumber(capture(text, /condom.nio\s*:?\s*R\$\s*([\d.,]+)/i)),
-    iptu: parseBrNumber(field(fields, /^iptu/) ?? capture(text, /iptu[^R\d]{0,20}R\$\s*([\d.,]+)/i)),
+    ...parseIptu(field(fields, /^iptu/) ?? iptuSnippet(text)),
     privateArea: number(/.rea (?:.til|privativa|constru.da)\s*([\d.,]+)/i) ?? parseBrNumber(field(fields, /^.rea (.til|privativa|constru.da)/)),
     totalArea: number(/(?:.rea total|terreno)\s*([\d.,]+)/i) ?? parseBrNumber(field(fields, /^.rea (total|terreno)/)),
     bedrooms: integer(/(\d+)\s*dormit/i) ?? parseInteger(field(fields, /^dormit/)),

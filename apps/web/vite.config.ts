@@ -6,12 +6,12 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/api': { target: 'http://localhost:3333', changeOrigin: true },
+      '/api': { target: `http://localhost:${process.env.API_PORT ?? 3333}`, changeOrigin: true },
     },
   },
   preview: {
     proxy: {
-      '/api': { target: 'http://localhost:3333', changeOrigin: true },
+      '/api': { target: `http://localhost:${process.env.API_PORT ?? 3333}`, changeOrigin: true },
     },
   },
   css: {

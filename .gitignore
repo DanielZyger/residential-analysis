@@ -4,3 +4,4 @@ dist
 *.log
 apps/api/data/cache
 apps/api/data/dataset.json
+.logs

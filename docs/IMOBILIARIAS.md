@@ -27,7 +27,7 @@ Legenda:
 | 12 | Castelinho Imóveis | castelinhoimoveis.com.br | SigaHost clássico (PHP) | SSR | P A D S B V Bai* T C F | 180 / 0 (319 / 0) | Sim | **Alta** |
 | 13 | Imóveis Casa Dez | imoveiscasadez.com.br | SigaHost clássico | SSR | P A D S B V Bai* T C F | 133 / 2 (202 / 7) | Sim | **Alta** |
 | 14 | Pity Azevedo Negócios Imob. | azevedocorretores.com.br | SigaHost clássico | SSR | P A D S B V Bai* T C F | 94 / 0 (140 / 0) | Sim | Média |
-| 15 | Piccoli Imóveis | piccoliimoveis.com.br | SigaHost clássico | SSR | P A D S B V Bai* T C F | 87 / 4 (140 / 21) | Sim | Média |
+| 15 | Piccoli Imóveis | piccoliimoveis.com.br | **SigaHost (Nuxt)** desde 10/2026 (antes clássico) | API JSON | P A D S B V Bai T C F Geo | 92 res. (coleta 15/10/2026) | Sim (modelo antigo de robots.txt) | Média |
 | 16 | Palmas Imobiliária | imobiliariapalmas.com.br | SigaHost clássico | SSR | P A D S B V Bai* T C F | 25 / 5 (42 / 19) | Sim | Baixa |
 | 17 | Imobiliária Tonatto | tonatto.com.br | SigaHost clássico | SSR | P A D S B V Bai* T C F | 9 / 6 (27 / 9) | Sim | Baixa |
 | 18 | Dalmut Imóveis | dalmutimoveis.com.br | ImobiBrasil | SSR+LD | P A(total/útil) D B V Bai T C F Condomínio | 206 / 14 (432 / 25) | Sim (`Allow: /`) | **Alta** |
@@ -40,7 +40,7 @@ Legenda:
 | 25 | Demarco Imóveis | demarcoimoveis.com | Praedium CRM | SSR+LD | P A D B Bai T C F | 118 / 3 (222 / 4 em Erechim) | Sim (só bloqueia `/busca-imoveis.html`) | Média |
 | 26 | AGE Imóveis | imoveisage.com.br | Arbo Imóveis (Next.js) | SSR (`__NEXT_DATA__`) + XHR | P A D B V Bai T C F Geo Cond IPTU | 90 / 2 (143 / 7) | Sim | Média |
 | 27 | Abenur Imóveis | abenurimoveis.com.br | Site próprio (BYOV / "Enterprise" Orby) | SSR | P A(terreno/constr) D B V Bai T C | não verificado (~117 links na home) | Sem robots.txt válido (devolve página 404) | Baixa/Média |
-| 28 | Imóveis Silvana | imoveissilvana.com.br | Byll Agência (PHP) | SSR | P Bai T C F (área/dorm só no texto livre) | não verificado (28 por página) | Sim (`Crawl-delay: 10`) | Baixa |
+| 28 | Imóveis Silvana | imoveissilvana.com.br | **SigaHost (Nuxt)** desde 10/2026 (antes Byll Agência) | API JSON | — | — | **Não**: robots.txt novo bloqueia `/imoveis/` | Excluir |
 | 29 | Bonatto Empreend. Imobiliários | bonattoimoveis.com.br | Painel Imobiliário / Studio72 (Sistemas Pleno) | SSR | não verificado em detalhe | não verificado (~29 na listagem) | robots.txt devolve HTML | Baixa |
 
 \* Na listagem do SigaHost clássico o card mostra só "Erechim / RS". O bairro aparece na página de detalhe (`.sp-address-property`).
@@ -313,6 +313,8 @@ O template varia de site para site (Dalmut usa outro, com `section.topsearch`). 
 - O `/robots.txt` devolve uma página 404 HTML.
 
 ### Imóveis Silvana (Byll Agência)
+> **Atualização 15/10/2026:** o site migrou para SigaHost Nuxt e o novo robots.txt (`User-agent: *` / `Disallow: /imoveis/`) pede para não coletar os anúncios. Excluída da coleta.
+
 - https://www.imoveissilvana.com.br. `meta author="Byll Agência"`.
 - Listagem `imoveis/localizar/?finalidade=V|L&tipo=<id>&page=N`, 28 por página. Tipos: 1 Apartamento, 4 Casa, 6 Cobertura, 17 Terreno, 18 Lançamentos...
 - Card: `.individual-imoveis a[href="imoveis/ver/AP0279"]`, `.alt-imagem` (tipo), `.nome-ref` (REF), `p.nome` (Bairro | Cidade), `p.preco` (às vezes "A combinar").

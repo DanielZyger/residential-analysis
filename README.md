@@ -9,6 +9,9 @@ Node 22+
 
 ## Uso
 ```bash
+./open_aluguel.sh            # sobe API + web e abre o ranking de aluguel (Ctrl+C encerra)
+./open_aluguel.sh --scrape   # coleta os dados antes de subir
+
 npm install
 npm run scrape          # coleta todas as fontes ativas → apps/api/data/dataset.json
 npm run geo -w @er/api  # atualiza centro da cidade e posição dos bairros (OpenStreetMap) → apps/api/data/geo.json

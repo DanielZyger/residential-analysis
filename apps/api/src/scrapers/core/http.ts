@@ -26,6 +26,14 @@ function decode(bytes: Uint8Array, contentType: string | null): string {
 }
 
 export class RobotsDisallowedError extends Error {}
+export class BlockedError extends Error {}
+class HttpStatusError extends Error {}
+
+const BLOCKING_STATUSES = new Set([403, 405, 429]);
+
+export function isFatalForSource(error: unknown): boolean {
+  return error instanceof BlockedError || error instanceof RobotsDisallowedError;
+}
 
 export class HttpClient {
   private robots = new Map<string, Promise<RobotsRules>>();
@@ -60,13 +68,14 @@ export class HttpClient {
           signal: AbortSignal.timeout(this.options.timeoutMs),
         });
         if (response.ok) return response;
-        if (response.status < 500 && response.status !== 429) {
-          throw new Error(`HTTP ${response.status} em ${url}`);
+        if (BLOCKING_STATUSES.has(response.status)) {
+          throw new BlockedError(`site bloqueou a coleta (HTTP ${response.status}) em ${url}`);
         }
+        if (response.status < 500) throw new HttpStatusError(`HTTP ${response.status} em ${url}`);
         lastError = new Error(`HTTP ${response.status} em ${url}`);
       } catch (error) {
+        if (error instanceof BlockedError || error instanceof HttpStatusError) throw error;
         lastError = error;
-        if (error instanceof Error && /HTTP 4\d\d/.test(error.message) && !error.message.includes('429')) throw error;
       }
       await new Promise((r) => setTimeout(r, 1000 * 2 ** attempt));
     }

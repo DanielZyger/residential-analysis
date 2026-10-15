@@ -71,9 +71,17 @@ async function main(): Promise<void> {
   log.info(`coletando ${selected.length} fonte(s)`);
   const results = await runPool(selected, concurrency, (s) => scrapeSource(s, collectedAt));
   const previous = await loadDataset();
-  const refreshed = new Set(results.filter((r) => !r.source.lastRunError || r.properties.length).map((r) => r.source.id));
+  const previousBySource = new Set(previous.properties.map((p) => p.sourceId));
+  for (const r of results) {
+    if (!r.source.lastRunError && r.properties.length === 0 && previousBySource.has(r.source.id)) {
+      r.source.lastRunError = 'Nenhum imóvel encontrado (o site pode ter mudado de plataforma)';
+    }
+  }
+  const accepted = results.filter((r) => !r.source.lastRunError || !previousBySource.has(r.source.id));
+  for (const r of results.filter((r) => !accepted.includes(r))) log.warn(`${r.source.id}: coleta com erro, mantidos os dados da coleta anterior`);
+  const refreshed = new Set(accepted.map((r) => r.source.id));
   const kept = previous.properties.filter((p) => !refreshed.has(p.sourceId));
-  const properties = [...results.flatMap((r) => r.properties), ...kept];
+  const properties = [...accepted.flatMap((r) => r.properties), ...kept];
   const sourcesById = new Map(previous.sources.map((s) => [s.id, s]));
   for (const { source } of results) sourcesById.set(source.id, source);
   const sources = SOURCES.map((s) => ({ ...describe(s), ...pickRunInfo(sourcesById.get(s.id)) }));

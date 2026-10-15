@@ -85,18 +85,21 @@ Transação (venda/aluguel), tipo, dormitórios mín., vagas mín., suítes mín
 - [x] Aviso de origem dos dados em todas as telas
 
 ### Entrega 2 — Qualidade dos dados
-- Adapters pendentes: Demarco (Praedium, JSON-LD), AGE (Arbo, `__NEXT_DATA__`), Abenur, Silvana, Bonatto
+- [x] Coletores Demarco (Praedium), AGE (Arbo), Abenur e Bonatto (Painel Imobiliário)
+  - Silvana migrou para SigaHost e o novo robots.txt bloqueia `/imoveis/`: fora da coleta, como Rigon, Santin, Piazza e LCD
+  - Demarco bloqueia por volume (firewall): coleta com 8 s entre requisições; a coleta para ao receber bloqueio (403/405/429) e mantém os dados anteriores
+- [x] Área por planta em lançamentos com várias plantas (extraída da descrição, ex.: "58m²: ... 02 dormitórios")
+- [x] IPTU padronizado como valor anual (texto do anúncio: "anual", "mensal", "6x de"; sem indicação, estimado pela razão IPTU/valor do imóvel)
+- [x] Deduplicação entre imobiliárias (mesmo preço + mesma rua ou área ±3% no mesmo bairro)
 - Agendamento diário da coleta (cron)
 - Mapear loteamentos ("Florais Itália", "Estar do Chile"...) para o bairro oficial usando lat/long
-- Padronizar IPTU (anual vs. parcela) entre fontes
-- Área por planta em lançamentos com várias plantas
 - Banco SQLite/Postgres com histórico de preço (variação, tempo em anúncio)
-- Deduplicação por similaridade de fotos/descrição
-- Geocodificação dos imóveis
+- Respeitar `Crawl-delay` do robots.txt no HttpClient
 
 ### Entrega 3 — Contexto do bairro
-- Índice de infraestrutura por bairro via OpenStreetMap (escolas, saúde, mercados, transporte)
-- Mapa com camadas de preço/m²
+- [x] Localização na nota: distância ao centro + valorização do bairro (OpenStreetMap)
+- [x] Mapa (`/mapa`): imóveis coloridos pela nota e camada de m² por bairro
+- Índice de serviços por bairro (escolas, saúde, mercados) quando o OSM tiver cobertura suficiente em Erechim
 - Pesos da nota ajustáveis pelo usuário
 
 ### Entrega 4 — Parcerias

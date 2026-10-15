@@ -1,6 +1,7 @@
 import type { PropertyType, TransactionType } from '@er/shared';
 import { crawlListings, type ListingCrawlerSpec } from '../core/crawl';
 import { metaContent, textOf, uniqueUrls, type Html } from '../core/html';
+import { iptuSnippet, parseIptu } from '../core/iptu';
 import { normalizePropertyType } from '../core/normalize';
 import type { PlatformAdapter, ScrapedProperty } from '../core/types';
 import { cleanText, normalizeText, parseBrNumber, parseInteger } from '../../utils/text';
@@ -103,7 +104,7 @@ function parseDetail($: Html, url: string, transaction: TransactionType, fallbac
     title,
     price: parseBrNumber(textOf($, '.property-pricing .value-real-number')),
     condoFee: money(pricing, /condom.nio/),
-    iptu: money(pricing, /iptu/),
+    ...parseIptu(iptuSnippet(pricing)),
     privateArea: parseBrNumber(spec(entries, /privativa|constru|util/)),
     totalArea: parseBrNumber(spec(entries, /area|terreno/, /privativa|constru|util/)),
     bedrooms: count(rooms, /(\d+)\s*dorm/i),

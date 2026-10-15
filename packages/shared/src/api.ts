@@ -56,3 +56,34 @@ export interface MetaResponse {
   sources: { id: string; name: string; count: number }[];
   ranges: Record<TransactionType, { minPrice: number; maxPrice: number; minArea: number; maxArea: number }>;
 }
+
+export interface MapPoint {
+  id: string;
+  lat: number;
+  lng: number;
+  title: string;
+  type: PropertyType;
+  neighborhood: string | null;
+  price: number | null;
+  pricePerM2: number | null;
+  bedrooms: number | null;
+  score: number;
+  photo: string | null;
+}
+
+export interface MapNeighborhood {
+  slug: string;
+  name: string;
+  lat: number;
+  lng: number;
+  count: number;
+  medianPricePerM2: number | null;
+}
+
+export interface MapResponse {
+  transaction: TransactionType;
+  center: { lat: number; lng: number } | null;
+  totalMatching: number;
+  points: MapPoint[];
+  neighborhoods: MapNeighborhood[];
+}

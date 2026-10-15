@@ -1,4 +1,4 @@
-import { PROPERTY_TYPE_LABELS, TRANSACTION_LABELS, type RankedProperty } from '@er/shared';
+import { monthlyIptu, PROPERTY_TYPE_LABELS, TRANSACTION_LABELS, type RankedProperty } from '@er/shared';
 import { EMPTY_VALUE, formatArea, formatCurrency, formatNumber } from '../../utils/format';
 
 interface PropertyFactsProps {
@@ -18,7 +18,7 @@ export function PropertyFacts({ property }: PropertyFactsProps) {
     { label: 'Banheiros', value: formatNumber(property.bathrooms) },
     { label: 'Vagas', value: formatNumber(property.parkingSpots) },
     { label: 'Condomínio', value: property.condoFee != null ? `${formatCurrency(property.condoFee)}/mês` : EMPTY_VALUE },
-    { label: 'IPTU', value: formatCurrency(property.iptu) },
+    { label: 'IPTU', value: property.iptu == null ? formatCurrency(null) : `${formatCurrency(property.iptu)}/ano (${formatCurrency(monthlyIptu(property.iptu))}/mês)` },
     { label: 'Código na imobiliária', value: property.externalId },
   ];
   return (

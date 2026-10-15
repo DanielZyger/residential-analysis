@@ -5,6 +5,7 @@ import { cx } from '../../utils/cx';
 
 const LINKS = [
   { to: '/', label: 'Ranking', icon: 'trophy', end: true },
+  { to: '/mapa', label: 'Mapa', icon: 'map', end: false },
   { to: '/bairros', label: 'Bairros', icon: 'geo-alt', end: false },
   { to: '/fontes', label: 'Fontes', icon: 'database', end: false },
 ];

@@ -2,17 +2,16 @@ import type { SourceConfig } from './core/types';
 
 type Entry = [id: string, name: string, website: string];
 
-const ROBOTS_DISALLOWED = new Set(['rigon', 'santin', 'piazza', 'lcd']);
-const PENDING_PLATFORMS = new Set(['praedium', 'arbo', 'abenur', 'byll', 'painel-imobiliario']);
+const ROBOTS_DISALLOWED = new Set(['rigon', 'santin', 'piazza', 'lcd', 'silvana']);
+const SOURCE_OPTIONS: Record<string, SourceConfig['options']> = {
+  demarco: { minIntervalMs: 8000 },
+  age: { minIntervalMs: 3000 },
+};
 
 function group(platform: string, entries: Entry[], options?: SourceConfig['options']): SourceConfig[] {
   return entries.map(([id, name, website]) => {
-    const inactiveReason = ROBOTS_DISALLOWED.has(id)
-      ? 'O robots.txt do site pede para não coletar os anúncios'
-      : PENDING_PLATFORMS.has(platform)
-        ? 'Coletor ainda não implementado'
-        : null;
-    return { id, name, website, platform, active: !inactiveReason, inactiveReason, options };
+    const inactiveReason = ROBOTS_DISALLOWED.has(id) ? 'O robots.txt do site pede para não coletar os anúncios' : null;
+    return { id, name, website, platform, active: !inactiveReason, inactiveReason, options: { ...options, ...SOURCE_OPTIONS[id] } };
   });
 }
 
@@ -29,12 +28,13 @@ export const SOURCES: SourceConfig[] = [
     ['santin', 'Imobiliária Santin', 'https://www.imobiliariasantin.com.br'],
     ['piazza', 'Piazza Imóveis', 'https://www.imobiliariapiazza.com.br'],
     ['lcd', 'LCD Imobiliária', 'https://www.lcdimobiliaria.com.br'],
+    ['silvana', 'Imóveis Silvana', 'https://www.imoveissilvana.com.br'],
+    ['piccoli', 'Piccoli Imóveis', 'https://www.piccoliimoveis.com.br'],
   ]),
   ...group('sigahost-classic', [
     ['castelinho', 'Castelinho Imóveis', 'https://www.castelinhoimoveis.com.br'],
     ['casadez', 'Imóveis Casa Dez', 'https://www.imoveiscasadez.com.br'],
     ['azevedo', 'Pity Azevedo Negócios Imobiliários', 'https://www.azevedocorretores.com.br'],
-    ['piccoli', 'Piccoli Imóveis', 'https://www.piccoliimoveis.com.br'],
     ['palmas', 'Palmas Imobiliária', 'https://www.imobiliariapalmas.com.br'],
     ['tonatto', 'Imobiliária Tonatto', 'https://www.tonatto.com.br'],
   ]),
@@ -50,6 +50,5 @@ export const SOURCES: SourceConfig[] = [
   ...group('praedium', [['demarco', 'Demarco Imóveis', 'https://www.demarcoimoveis.com']]),
   ...group('arbo', [['age', 'AGE Imóveis', 'https://www.imoveisage.com.br']]),
   ...group('abenur', [['abenur', 'Abenur Imóveis', 'https://www.abenurimoveis.com.br']]),
-  ...group('byll', [['silvana', 'Imóveis Silvana', 'https://www.imoveissilvana.com.br']]),
   ...group('painel-imobiliario', [['bonatto', 'Bonatto Empreendimentos Imobiliários', 'https://www.bonattoimoveis.com.br']]),
 ];

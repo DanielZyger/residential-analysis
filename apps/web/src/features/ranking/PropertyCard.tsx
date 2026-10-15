@@ -1,7 +1,7 @@
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PROPERTY_TYPE_LABELS, type RankedProperty } from '@er/shared';
-import { ImageWithFallback } from '../../components/ImageWithFallback';
+import { PhotoCarousel } from '../../components/PhotoCarousel';
 import { MedianDelta } from '../../components/MedianDelta';
 import { PriceBreakdown } from '../../components/PriceBreakdown';
 import { PropertyStats } from '../../components/PropertyStats';
@@ -21,19 +21,15 @@ interface PropertyCardProps {
 function PropertyCardComponent({ property, position, layout = 'list' }: PropertyCardProps) {
   const location = [property.neighborhood, property.address].filter(Boolean).join(' · ') || 'Bairro não informado';
   const titleId = `property-${property.id}-title`;
+  const href = `/imovel/${encodeURIComponent(property.id)}`;
+  const navigate = useNavigate();
   return (
     <article className={cx('property-card', `property-card--${layout}`, 'er-hover-lift')} aria-labelledby={titleId}>
-      <div className="property-card__media er-media">
-        <ImageWithFallback src={property.photos[0]} alt={property.title} />
+      <div className="property-card__media">
+        <PhotoCarousel photos={property.photos} title={property.title} variant="card" onSelect={() => navigate(href)} />
         {position != null && (
           <span className="property-card__position" aria-label={`Posição ${position} no ranking`}>
             #{position}
-          </span>
-        )}
-        {property.photos.length > 1 && (
-          <span className="property-card__photos" aria-label={`${property.photos.length} fotos`}>
-            <i className="bi bi-images me-1" aria-hidden="true" />
-            {property.photos.length}
           </span>
         )}
       </div>
@@ -42,7 +38,7 @@ function PropertyCardComponent({ property, position, layout = 'list' }: Property
           <div className="min-w-0">
             <div className="er-eyebrow">{PROPERTY_TYPE_LABELS[property.type]}</div>
             <h3 className="property-card__title er-truncate-2" id={titleId}>
-              <Link to={`/imovel/${encodeURIComponent(property.id)}`} className="stretched-link">
+              <Link to={href} className="stretched-link">
                 {property.title}
               </Link>
             </h3>

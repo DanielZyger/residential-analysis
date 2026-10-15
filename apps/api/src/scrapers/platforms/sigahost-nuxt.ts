@@ -2,6 +2,8 @@ import * as cheerio from 'cheerio';
 import type { PropertyType, TransactionType } from '@er/shared';
 import { cleanText, normalizeText, parseBrNumber, parseInteger } from '../../utils/text';
 import { normalizePropertyType } from '../core/normalize';
+import { builtAreaFromText, planAreasFromSegments } from '../core/textAreas';
+import { typeGroup } from '../../services/market/typeGroup';
 import type { PlatformAdapter, ScrapeContext, ScrapedProperty, SourceConfig } from '../core/types';
 
 interface SigaPlan {
@@ -62,13 +64,39 @@ function apiUrl(source: SourceConfig, path: string, params: Record<string, strin
   return `${source.website}/api/${path}?${query}`;
 }
 
+function positive(value: string | undefined): number | null {
+  const parsed = parseBrNumber(value);
+  return parsed && parsed > 0 ? parsed : null;
+}
+
 function coordinate(value: string | undefined): number | null {
   const parsed = Number.parseFloat(value ?? '');
   return Number.isFinite(parsed) && parsed !== 0 ? parsed : null;
 }
 
-function htmlToText(html: string | undefined): string | null {
-  return html ? cleanText(cheerio.load(html).text()) : null;
+function descriptionHtml(item: SigaDetail): string {
+  return item.Descricao?.map((d) => d.Texto).join(' ') ?? '';
+}
+
+function htmlToText(html: string): string | null {
+  return cleanText(cheerio.load(html).text());
+}
+
+function htmlSegments(html: string): string[] {
+  const $ = cheerio.load(html);
+  return $('li, p')
+    .map((_, el) => cleanText($(el).text()))
+    .get()
+    .filter((t): t is string => !!t);
+}
+
+function areas(item: SigaDetail, plan: SigaPlan, type: PropertyType, multiPlan: boolean, description: string | null): Pick<ScrapedProperty, 'privateArea' | 'totalArea'> {
+  if (multiPlan) {
+    const planArea = planAreasFromSegments(htmlSegments(descriptionHtml(item))).get(plan.Dormitorios ?? 0);
+    const houseArea = typeGroup(type) === 'house' ? builtAreaFromText(description) : null;
+    return { privateArea: planArea ?? houseArea, totalArea: null };
+  }
+  return { privateArea: positive(item.AreaPrivativa) ?? builtAreaFromText(description), totalArea: positive(item.AreaTotal) };
 }
 
 function amenityFlags(item: SigaListing): string[] {
@@ -84,10 +112,7 @@ function amenityFlags(item: SigaListing): string[] {
 }
 
 function toProperty(item: SigaDetail, plan: SigaPlan, type: PropertyType, transaction: TransactionType, multiPlan: boolean): ScrapedProperty {
-  const positive = (value: string | undefined) => {
-    const parsed = parseBrNumber(value);
-    return parsed && parsed > 0 ? parsed : null;
-  };
+  const description = htmlToText(descriptionHtml(item));
   const characteristics = Object.values(item.Caracteristicas ?? {}).flat();
   return {
     externalId: multiPlan ? `${item.ID}-${plan.Id}` : String(item.ID),
@@ -98,8 +123,7 @@ function toProperty(item: SigaDetail, plan: SigaPlan, type: PropertyType, transa
     price: positive(plan.Valor),
     condoFee: positive(item.ValorCondominio),
     iptu: positive(item.ValorIPTU),
-    privateArea: multiPlan ? null : positive(item.AreaPrivativa),
-    totalArea: multiPlan ? null : positive(item.AreaTotal),
+    ...areas(item, plan, type, multiPlan, description),
     bedrooms: plan.Dormitorios || null,
     suites: parseInteger(item.Suites),
     bathrooms: parseInteger(item.Banheiros) || null,
@@ -108,7 +132,7 @@ function toProperty(item: SigaDetail, plan: SigaPlan, type: PropertyType, transa
     address: cleanText(item.Endereco),
     latitude: coordinate(item.Latitude),
     longitude: coordinate(item.Longitude),
-    description: htmlToText(item.Descricao?.map((d) => d.Texto).join(' ')),
+    description,
     photos: (Array.isArray(item.Fotos) ? item.Fotos : Object.values(item.Fotos ?? {}).flat()).map((f) => f.Foto_Grande),
     features: [...amenityFlags(item), ...characteristics],
   };

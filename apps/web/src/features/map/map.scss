@@ -1,0 +1,89 @@
+@import '../../styles/abstracts';
+
+.map-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+
+  &__count {
+    margin-left: auto;
+  }
+}
+
+.map-frame {
+  position: relative;
+  @include er-surface;
+  overflow: hidden;
+}
+
+.leaflet-map {
+  height: min(70vh, 640px);
+  min-height: 360px;
+  z-index: 0;
+}
+
+.map-legend {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 500;
+  max-width: calc(100% - 1.5rem);
+  padding: 0.6rem 0.75rem;
+  border-radius: $border-radius;
+  background: rgba($white, 0.95);
+  box-shadow: $box-shadow-sm;
+  font-size: $font-size-sm * 0.9;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  &__swatch {
+    flex-shrink: 0;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px $white;
+  }
+
+  &__note {
+    margin-top: 0.3rem;
+    color: $text-muted;
+  }
+}
+
+.map-popup {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 180px;
+  font-size: $font-size-sm;
+
+  img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: $border-radius-sm;
+    margin-bottom: 0.35rem;
+  }
+
+  &__title {
+    line-height: 1.3;
+  }
+
+  a {
+    margin-top: 0.25rem;
+    font-weight: $font-weight-semibold;
+  }
+}

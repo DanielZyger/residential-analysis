@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
 import type { PropertyType } from '@er/shared';
 import { cleanText, normalizeText, parseBrNumber, parseInteger } from '../../utils/text';
+import { parseIptu } from './iptu';
 import { normalizePropertyType } from './normalize';
 import type { ScrapedProperty } from './types';
 
@@ -41,7 +42,7 @@ export type Facts = Map<string, string>;
 
 type FactFields = Pick<
   ScrapedProperty,
-  'price' | 'condoFee' | 'iptu' | 'privateArea' | 'totalArea' | 'bedrooms' | 'suites' | 'bathrooms' | 'parkingSpots'
+  'price' | 'condoFee' | 'iptu' | 'iptuPeriod' | 'privateArea' | 'totalArea' | 'bedrooms' | 'suites' | 'bathrooms' | 'parkingSpots'
 >;
 
 export function setFact(facts: Facts, label: string | null | undefined, value: string | null | undefined): void {
@@ -70,18 +71,27 @@ export function factFields(facts: Facts): FactFields {
   return {
     price: money(fact(facts, /^(venda|aluguel|valor do aluguel|valor do imovel|preco)$/)),
     condoFee: money(fact(facts, /^condominio/)),
-    iptu: money(fact(facts, /^iptu/)),
-    privateArea: area(/^area privativa/, /^area (construida|util)/),
-    totalArea: area(/^area total/, /^area (do )?terreno( total)?$/),
+    ...parseIptu(fact(facts, /^iptu/)),
+    privateArea: area(/^area privativa/, /^area (construida|construido|util)/, /^(construida|construido)$/),
+    totalArea: area(/^area total/, /^area (total )?(do )?terreno( total)?$/, /^terreno$/),
     bedrooms: count(/^(dormitorio|quarto)/),
     suites: count(/^suite/),
     bathrooms: count(/^banheiro/),
-    parkingSpots: count(/^(vaga|garagem)/),
+    parkingSpots: count(/^(vaga|garagem|box)/),
   };
 }
 
 export function residentialType(...hints: (string | null | undefined)[]): PropertyType | null {
   return normalizePropertyType(...hints.map((hint) => hint?.replace(/-/g, ' '))) ?? null;
+}
+
+const ERECHIM_BOUNDS = { lat: [-27.71, -27.57], lng: [-52.36, -52.2] } as const;
+
+export function insideErechim(latitude: number | null, longitude: number | null): boolean {
+  if (latitude === null || longitude === null) return true;
+  const [south, north] = ERECHIM_BOUNDS.lat;
+  const [west, east] = ERECHIM_BOUNDS.lng;
+  return latitude >= south && latitude <= north && longitude >= west && longitude <= east;
 }
 
 export function isErechim(value: string | null | undefined): boolean {
